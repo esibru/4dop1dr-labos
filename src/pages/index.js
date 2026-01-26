@@ -18,7 +18,7 @@ function HomepageHeader() {
         <div>
           <a
             className="button button--secondary button--lg"
-            href="/devops/docs/Premier déploiement/td01-variables-environnements"
+            href="/4dop1dr-labos/docs/Premier déploiement/td01-variables-environnements"
           >
             Commencer les travaux dirigés
           </a>
@@ -81,10 +81,6 @@ export default function Home() {
             <li>
               <strong>Infrastructure as Code (IaC) avec Terraform</strong><br />
               Découvrez comment gérer et provisionner vos infrastructures à l'aide de Terraform.
-            </li>
-            <li>
-              <strong>Monitoring</strong><br />
-              Apprenez à surveiller vos systèmes pour garantir leur performance et leur disponibilité.
             </li>
             <li>
               <strong>Scénarios pratiques : Interactions entre outils DevOps</strong><br />
