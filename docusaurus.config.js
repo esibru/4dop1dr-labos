@@ -18,12 +18,12 @@ const config = {
   url: 'https://esibru.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/devops/',
+  baseUrl: '/4dop1dr-labos/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'esibru', // Usually your GitHub org/user name.
-  projectName: 'devops', // Usually your repo name.
+  projectName: '4dop1dr-labos', // Usually your repo name.
   trailingSlash: false,
 
   onBrokenLinks: 'throw',
