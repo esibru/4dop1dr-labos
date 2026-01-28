@@ -264,13 +264,26 @@ celui de notre application.
 AlwaysData est une plateforme qui permet d'héberger des sites web, des applications et des bases de données en ligne. 
 Elle prend en charge de nombreuses technologies telles que PHP, Python, Node.js, Ruby et Java. Elle est compatible avec des systèmes de bases de données comme MySQL, PostgreSQL, SQLite et MongoDB. 
 De plus, elle offre un accès SSH pour une gestion avancée.
+
 Pour déployer une application Spring Boot sur cette plateforme,
 [commencez par vous inscrire sur Alwaysdata en utilisant votre adresse mail étudiant.](https://www.alwaysdata.com/fr/inscription/)
+
+![Page de login](../../static/img/alwaysdata-login.png)
+
+Choisissez de vous connecter avec *Google*
+
+![Inscription](../../static/img/alwaysdata-signin.png)
+
+Choisissez le plan gratuit, fournissez un mot de passe et indiquez `g12345` (un `g` suivi de votre matricule) comme login.
 
 ### Installer le JDK
 
 Une fois connecté, la page d’accueil affiche les **Sites** associés à votre compte. 
-Un premier site est créé et à la forme *g12345.alwaysdata.net*. 
+Un premier site web est créé et à la forme *g12345.alwaysdata.net*.
+
+![Inscription](../../static/img/alwaysdata-site.png)
+
+Testez et constatez que le site contient juste une page d'accueil basique par défaut.
 
 :::warning
 
@@ -294,26 +307,27 @@ SSH (Secure Shell) est un protocole réseau sécurisé qui permet d'établir une
 Pour pouvoir déposer le fichier JAR de l'application, il faut définir le protocole de communication entre la machine de développement et la machine hébergée chez Alwaydata. Les deux machines vont communiquer via SSH.
 
 1. Sur la page de votre compte, sélectionnez le menu `Remote access > SSH` dans le menu de navigation. 
-Cette page liste les utilisateurs SSH associés à votre compte. Un utilisateur par défaut a été créé lors de la création de votre compte mais cet utilisateur n'est pas utilisable. 
-1. Cliquez sur le bouton pour modifier cet utilisateur &#9881;&#65039; et cochez la case `Enable password-based login `. Cette option va vous permettre de vous connecter à la machine réservée pour vous sur Alwaysdata en utilisant le mot de passe de votre compte.
-1. **Vérifiez** que l'activation SSH fonctionne en ouvrant sur votre machine de travail un terminal et en exécutant la commande `ssh g12345@ssh-g12345.alwaysdata.net`
-1. Confirmez cette première connexion en répond `yes` à la question `Are you sure you want to continue connecting (yes/no/[fingerprint])?`
+Cette page liste les utilisateurs SSH associés à votre compte.
+ Un utilisateur par défaut a été créé lors de la création de votre compte mais cet utilisateur n'est pas utilisable. 
+1. Vérifiez que l'utilisateur créé peut bien se connecter avec un mot de passe.
+1. **Vérifiez** que l'activation SSH fonctionne en ouvrant sur votre machine de travail un terminal et en exécutant la commande `ssh g12345@ssh-g12345.alwaysdata.net`.
+1. Si nécessaire, confirmez cette première connexion en répond `yes` à la question `Are you sure you want to continue connecting (yes/no/[fingerprint])?`.
 1. Entrez votre mot de passe quand il vous est demandé. 
-1. Si la connexion est un succès, le prompt de votre terminal a changé pour `g12345@ssh2:~$` et vous pouvez consulter le contenu de la machine associée à votre compte via `ls -lrtd *`.
-1. Vous devez voir deux dossier `admin` et `www`. Le dossier `www` est vide et va bientôt accueillir votre fichier JAR.
+1. Si la connexion est un succès, le prompt de votre terminal a changé pour `g12345@ssh2:~$` et vous pouvez consulter le contenu de la machine associée à votre compte via `ls -l`.
+1. Vous devez voir deux dossier `admin` et `www`. Le dossier `www` va bientôt accueillir votre fichier JAR.
 1. Entrez la commande `exit` pour vous déconnecter.
 
 ### Créer une clé SSH
 
 Une pratique courante consiste à configurer une clé SSH.
 Cette clé permet de se connecter automatiquement aux serveurs sans nécessiter de mot de passe à chaque connexion, offrant ainsi une solution pratique pour les utilisateurs réguliers.
-De plus, les clés SSH sont indispensables pour automatiser des tâches avec des scripts ou des outils comme Git, garantissant une connexion sécurisée sans intervention humaine.
+De plus, les clés SSH sont indispensables pour automatiser des tâches avec des scripts ou des outils comme *Git*, garantissant une connexion sécurisée sans intervention humaine.
 
 :::note Exercice
 
-Créez une clé SSH sur votre machine en suivant [la marche à suivre via ce lien.](https://help.alwaysdata.com/en/remote-access/ssh/use-keys/)
+Créez une clé SSH sur votre machine en suivant [la marche à suivre via ce lien.](https://help.alwaysdata.com/en/remote-access/ssh/use-keys/#in-unix--os-x). Même sous Windows, la procédure donnée pour Linux est plus simple.
 
-**Vérifiez** la connexion via `ssh g12345@ssh-g12345.alwaysdata.net`
+**Vérifiez** la connexion via `ssh g12345@ssh-g12345.alwaysdata.net`.
 Si la connexion échoue, utilisez l'option `-v` (verbose) de la commande `ssh` pour obtenir des informations détaillées.
 :::
 
@@ -326,7 +340,9 @@ L’infrastructure en place, le déploiement se résume à copier l'application 
 
 Utilisez la commande `scp` pour copier le fichier JAR dans le dossier `www`  et déployer l'application. 
 
-Après le déploiement tester le résultat via la commande `wget` ou `curl` via l'url `http://g12345.alwaysdata.net/`
+Après le déploiement tester le résultat via la commande `wget` ou `curl` via l'url `http://g12345.alwaysdata.net/`.
 
+Note: il y aura peut-être un petit délai, le temps que l'application démarre sur le serveur.
+Vous pouvez aussi forcer un redémarrage via le bon bouton sur la page de gestion du site.
 :::
 
