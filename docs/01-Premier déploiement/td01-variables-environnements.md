@@ -19,7 +19,7 @@ des variables d'environnements.
 :::warning Pré-requis
 
 1. Connaissance de base en Spring Boot et des commandes shell.
-1. Un environnement de travail prêt avec Git, Java (JDK 17 minimum) et un IDE (VS Codium).
+1. Un environnement de travail prêt avec Git, Java (JDK 21 minimum) et un IDE (VS Codium).
 
 :::
 
@@ -101,78 +101,42 @@ l'application.
 
 ### Exécution de l'application
 
-Afin de vérifier que votre environnement de travail est 
-opérationnel, essayez de démarrer l'application via l'outil 
-`maven` embarqué avec l'application.
-
-Dans le dossier racine de l'application, vérifiez la présence des 
-scripts `.mvnw` prévu pour des environnements Linux/macOS et 
-`.mvnw.cmd` destiné à des environnements  Windows. 
-Essayez d'exécuter le script correspondant à votre environnement 
-via la commande : 
-
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux/macOS">
-  ```
-    ./mvnw --version
-    ```
-  </TabItem>
-  <TabItem value="win" label="Windows">
-  ```
-  ./mvnw.cmd --version
-  ```
-  </TabItem>
-</Tabs>
-
-:::info Droits d'exécution
-
-Sur un environnement Linux/macOs pensez à vérifier les droits 
-d'exécution du script via la commande `ls -lrtd *`. 
-
-:::
-
+Rappelez-vous, pour exécuter l'application vous avez besoin de l'outil `maven`.
+Pour vérifier que l'outil est installé sur la machine, vous pouvez tenter de l'exécuter.
+```
+mvn --version
+```
 Vous devez obtenir un résultat proche de 
-
 ```
-Apache Maven 3.9.9
-Maven home: /home/g12345/.m2/wrapper/dists/apache-maven-3.9.9/3477a4f1
-Java version: 23.0.1, vendor: Oracle Corporation, runtime: /home/g12345/.jdks/openjdk-23.0.1
-Default locale: fr_FR, platform encoding: UTF-8
-OS name: "linux", version: "6.8.0-51-generic", arch: "amd64", family: "unix"
+Maven home: C:\Program Files\apache-maven-3.9.10
+Java version: 24.0.1, vendor: Oracle Corporation, runtime: C:\Program Files\Java\jdk-24
+Default locale: en_US, platform encoding: UTF-8
+OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 ```
 
-Dans le cas contraire, résolvez l'erreur suite à l'exécution du 
-script avant de continuer. Si le script a les droits d’exécution, 
-une erreur classique est l'absence  de la variable d'environnement 
-système `JAVA_HOME` voir l'absence du chemin vers le JDK dans le 
+Si `maven` n'est pas installé sur votre machine, vous pouvez l'installer
+ou utiliser la version *embarquée* dans le projet.
+Dans ce cas, il faudra remplacer partout la commande `mvn` par `./mvnw`.
+
+Dans tous les cas, ne continuez pas tant qu'une erreur persiste.
+Une erreur classique est l'absence de la variable d'environnement système `JAVA_HOME` voir l'absence du chemin vers le JDK dans le 
 `PATH` de votre machine.
-[Vous trouverez la marche à suivre sur ce wiki pour définir ces variables d'environnements systèmes.](https://www.wikihow.com/Set-Java-Home)
 
 :::warning Variables d'environnement système
-
 Une variable d'environnement système est définie au niveau du 
 système d'exploitation et est accessible par tous les processus.
 JAVA_HOME et PATH sont des variables d'environnement système.
 
-On définit ces variables dans un terminal via une instruction 
-`export MY_VAR=value`
-
+On définit ces variables pour la session courante via la commande `export MY_VAR=value`.
+Pour rendre la valeur permanente :
+- Sous Linux/MacOS : on ajoute l'instruction au fichier `~/.bashrc`
+- Sous Windows : on la définit via la fenêtre *Edit environment variables for your account* dans les settings.
 :::
 
 Vous pouvez désormais démarrer l'application avec la commande
-
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux/macOS">
-  ```
-    ./mvnw spring-boot:run
-    ```
-  </TabItem>
-  <TabItem value="win" label="Windows">
-  ```
-  ./mvnw.cmd spring-boot:run
-  ```
-  </TabItem>
-</Tabs>
+```
+mvn spring-boot:run
+```
 
 ### Consommer le service REST
 
@@ -185,7 +149,7 @@ entreprises pour déployer une application.
 
 :::note Exercice
 
-Utilisez la commande `wget` ou la commande `curl` pour consommer 
+Utilisez la commande `curl` (installée à l'école) ou `curl` pour consommer 
 le service `localhost:8080/config`. N'hésitez pas à tester les 
 différentes options de ces commandes. Le résultat de la commande 
 doit ressembler à 
@@ -195,7 +159,7 @@ doit ressembler à
 ```
 
 Un format plus agréable est possible en redirigeant le contenu 
-JSON dans `python3 -m json.tool` par exemple.
+JSON dans `python -m json.tool` par exemple.
 
 ```JSON
 {
@@ -208,6 +172,8 @@ JSON dans `python3 -m json.tool` par exemple.
 ```
 
 :::
+
+Vous pouvez à présent arrêter l'application.
 
 ## Empaqueter l'application
 
@@ -238,25 +204,16 @@ et d’exécution de l’application.
 
 Pour réaliser l'empaquetage de l'application, exécutez la commande : 
 
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux/macOS">
-  ```
-    ./mvnw package
-    ```
-  </TabItem>
-  <TabItem value="win" label="Windows">
-  ```
-  ./mvnw.cmd package
-  ```
-  </TabItem>
-</Tabs>
+```
+mvn package
+```
 
 Vérifiez la présence du fichier `demo-1.0.0.jar` dans le dossier 
 `target/` et validez l'étape d'empaquetage en démarrant 
 l'application via la commande
 
 ```
-java -jar demo-1.0.0.jar
+java -jar target/demo-1.0.0.jar
 ```
 
 Consultez le résultat de la consommation du service rest via la 
