@@ -266,7 +266,7 @@ Elle prend en charge de nombreuses technologies telles que PHP, Python, Node.js,
 De plus, elle offre un accès SSH pour une gestion avancée.
 
 Pour déployer une application Spring Boot sur cette plateforme,
-[commencez par vous inscrire sur Alwaysdata en utilisant votre adresse mail étudiant.](https://www.alwaysdata.com/fr/inscription/)
+utilisez le lien que vous avez reçu de *AlwaysData* (le sujet est *Invitation AlwaysData Academic Cloud)
 
 ![Page de login](../../static/img/alwaysdata-login.png)
 
