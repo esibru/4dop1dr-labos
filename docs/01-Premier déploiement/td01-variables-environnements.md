@@ -340,7 +340,7 @@ L’infrastructure en place, le déploiement se résume à copier l'application 
 
 Utilisez la commande `scp` pour copier le fichier JAR dans le dossier `www`  et déployer l'application. 
 
-Après le déploiement tester le résultat via la commande `wget` ou `curl` via l'url `http://g12345.alwaysdata.net/`.
+Après le déploiement tester le résultat via la commande `wget` ou `curl` via l'url `http://g12345.alwaysdata.net/config`.
 
 Note: il y aura peut-être un petit délai, le temps que l'application démarre sur le serveur.
 Vous pouvez aussi forcer un redémarrage via le bon bouton sur la page de gestion du site.
