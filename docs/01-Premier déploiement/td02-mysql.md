@@ -83,7 +83,8 @@ spring.jpa.defer-datasource-initialization=true
 
 :::note Exercice
 
-1. Empaquetez et démarrez l'application.
+1. Démarrez l'application via `mvn spring-boot:run`.
+1. Vérifiez que le service web est fonctionnel. Vous devriez recevoir une personne en plus des propriétés.
 1. Connectez vous à la console de la base de données 
 via [localhost:8080/h2-console](localhost:8080/h2-console)
 1. Entrez `sa` comme nom d'utilisateur
@@ -93,6 +94,11 @@ via [localhost:8080/h2-console](localhost:8080/h2-console)
 Pensez-vous que cette configuration sans mot de passe 
 est correcte pour déployer l'application ?
 
+:::
+
+:::warning Mode développement vs mode déploiement
+Via la commande `mvn package` un *jar* est créé en mode **déploiement**, pas en mode **développement**; il ne contient pas de console h2.
+Pour voir la console h2, exécutez l'application en mode développement via un bouton de votre IDE ou via la commande `mvn spring-boot:run`.
 :::
 
 ## Préparer l’infrastructure
@@ -133,7 +139,7 @@ que la base de données `g12345_demo_devops` est **vide**.
 ### Sur la machine locale
 
 Sur votre machine, modifiez le fichier `application.properties` 
-et supprimez les informations concernant H2.
+et supprimez (ou mettez en commentaire) les informations concernant H2.
 
 ```java title="application.properties" showLineNumbers
 spring.application.name=demo pour devops
@@ -152,12 +158,7 @@ export SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION=true
 Suite à ces exports, les variables supprimées du fichier `application.properties` sont définies dans votre terminal.
 
 Dans **le même terminal**, empaquetez à présent votre application, démarrez-la et consommez le service REST 
-afin de **vérifiez** que l'application fonctionne suite à ces changements.
-
-:::warning Mode développement vs mode déploiement
-Le *jar* est créé en mode **déploiement**, pas en mode **développement**; il ne contient pas de console h2.
-Pour voir la console h2, exécutez l'application en mode développement via un bouton de votre IDE ou via la commande `mvn spring-boot:run`.
-:::
+afin de **vérifier** que l'application fonctionne suite à ces changements.
 
 ### Sur la machine distante 
 
