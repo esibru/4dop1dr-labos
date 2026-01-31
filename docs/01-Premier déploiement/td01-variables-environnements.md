@@ -348,6 +348,6 @@ Utilisez la commande `scp` pour copier le fichier JAR dans le dossier `www`  et 
 Après le déploiement tester le résultat via la commande `wget` ou `curl` via l'url `http://g12345.alwaysdata.net/config`.
 
 Note: il y aura peut-être un petit délai, le temps que l'application démarre sur le serveur.
-Vous pouvez aussi forcer un redémarrage via le bon bouton sur la page de gestion du site.
+Vous pouvez aussi forcer un redémarrage via le bon bouton sur la page de gestion du site. Un autre bouton permet quant à lui de consulter les logs.
 :::
 
