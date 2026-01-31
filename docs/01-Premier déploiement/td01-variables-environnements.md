@@ -316,7 +316,7 @@ Pour pouvoir déposer le fichier JAR de l'application, il faut définir le proto
 Cette page liste les utilisateurs SSH associés à votre compte.
 1. Vérifiez que l'utilisateur créé peut bien se connecter avec un mot de passe.
 1. **Vérifiez** que l'activation SSH fonctionne en ouvrant sur votre machine de travail un terminal et en exécutant la commande `ssh g12345@ssh-g12345.alwaysdata.net`.
-1. Si nécessaire, confirmez cette première connexion en répond `yes` à la question `Are you sure you want to continue connecting (yes/no/[fingerprint])?`.
+1. Si nécessaire, confirmez cette première connexion en répondant à la question `Are you sure you want to continue connecting (yes/no/[fingerprint])?`. Le mieux est de vérifier, grâce à un copier-coller, l'empreinte (fingerprint) correspondante fournie sur la page web. Si la sécurité ne vous intéresse pas, vous pouvez aussi répondre `yes`.
 1. Entrez votre mot de passe quand il vous est demandé. 
 1. Si la connexion est un succès, le prompt de votre terminal a changé pour `g12345@ssh2:~$` et vous pouvez consulter le contenu de la machine associée à votre compte via `ls -l`.
 1. Vous devez voir deux dossier `admin` et `www`. Le dossier `www` va bientôt accueillir votre fichier JAR.
