@@ -314,7 +314,6 @@ Pour pouvoir déposer le fichier JAR de l'application, il faut définir le proto
 
 1. Sur la page de votre compte, sélectionnez le menu `Remote access > SSH` dans le menu de navigation. 
 Cette page liste les utilisateurs SSH associés à votre compte.
- Un utilisateur par défaut a été créé lors de la création de votre compte mais cet utilisateur n'est pas utilisable. 
 1. Vérifiez que l'utilisateur créé peut bien se connecter avec un mot de passe.
 1. **Vérifiez** que l'activation SSH fonctionne en ouvrant sur votre machine de travail un terminal et en exécutant la commande `ssh g12345@ssh-g12345.alwaysdata.net`.
 1. Si nécessaire, confirmez cette première connexion en répond `yes` à la question `Are you sure you want to continue connecting (yes/no/[fingerprint])?`.
