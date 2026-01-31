@@ -6,7 +6,7 @@ via GitHub Pages.
 
 ## URL de publication
 
-Le résultat de ce projet est disponible en ligne sur : [https://lechjo01.github.io/devops/](https://lechjo01.github.io/devops/)
+Le résultat de ce projet est disponible en ligne sur : [https://esibru.github.io/4dop1dr-labos/](https://esibru.github.io/4dop1dr-labos/)
 
 
 ## Comment collaborer ?
