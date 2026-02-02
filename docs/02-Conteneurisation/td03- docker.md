@@ -25,46 +25,26 @@ Ce TD vous apprendra à manipuler les bases de la gestion des conteneurs.
 ## Installer Docker
 
 Docker est déjà installé sur les PC de l'école.
-Son installation sur votre machine, expliquée ci-dessous, dépend de votre système d'exploitation.
-Une fois installé, n'oubliez pas de vérifier que Docker fonctionne 
-via la commande `docker --version`.
+Sur votre machine, installez *Docker Desktop* en suivant ce [lien](https://docs.docker.com/desktop/).
+Une fois installé, n'oubliez pas de vérifier que Docker fonctionne via la commande `docker --version`.
 
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux">
-	[Installez Docker Engine et Docker CLI en suivant la documentation officielle](https://docs.docker.com/engine/install/). 
-	Les étapes incluent l’ajout des dépôts Docker, l’installation 
-	des paquets nécessaires, et la **configuration des permissions 
-	pour exécuter Docker sans privilèges root**.
+:::info Docker Engine
 
-	:::info Docker Engine
+C'est le moteur principal de Docker. Il permet de créer, 
+exécuter et gérer des conteneurs. Avec Docker Engine :
 
-	C'est le moteur principal de Docker. Il permet de créer, 
-	exécuter et gérer des conteneurs. Avec Docker Engine :
+- Vous utilisez le daemon Docker (`dockerd`) pour gérer les conteneurs.
+- Vous contrôlez Docker via la ligne de commande (**CLI**).
 
-	- Vous utilisez le daemon Docker (`dockerd`) pour gérer les conteneurs.
-	- Vous contrôlez Docker via la ligne de commande (**CLI**).
+:::
 
-	:::
-  </TabItem>
-  <TabItem value="win" label="Windows/macOS">
+:::info Docker Desktop
 
-	[Téléchargez et installez Docker Desktop](https://docs.docker.com/desktop/). 
-	Il inclut : Docker Engine, Docker CLI, Docker Compose, et une interface graphique.
+C'est une application complète. 
+Elle inclut Docker Engine, d'autres outils comme Docker Compose
+ainsi qu'une interface graphique pour gérer vos conteneurs.
 
-	- Windows : Assurez-vous que **WSL 2** (Windows Subsystem for Linux) 
-	est activé, car Docker Desktop utilise WSL pour exécuter ses conteneurs.
-	- macOS : Docker Desktop fonctionne directement et ne nécessite 
-	pas de configuration supplémentaire.
-
-	:::info Docker Desktop
-
-	C'est une application complète pour Windows et macOS. 
-	Elle inclut Docker Engine, la CLI et d'autres outils comme Docker Compose.
-	Avec Docker Desktop vous obtenez une interface graphique pour gérer vos conteneurs.
-
-	:::
-  </TabItem>
-</Tabs>
+:::
 
 ## Registre de conteneurs - Container registry
 
@@ -98,6 +78,15 @@ Sur les PC de l'école, le démon n'est pas lancé par défaut.
 Pour que les commandes `docker` ci-dessous fonctionnent, 
 il faut d'abord exécuter Docker Desktop qui va se charger de lancer le démon.
 
+Nous vous demandons toutefois d'éviter d'utiliser l'interface graphique.
+Vous serez plus performant en apprenant les lignes de commandes et ce sera absolument nécessaire pour écrire des scripts d'automatisation des tâches.
+
+:::
+
+:::warning
+
+Les commandes qui vont suivre peuvent télécharger de grosses quantités de données.
+Attention si vous utilisez une connexion 5G.
 :::
 
 :::info tutoriel image Docker
@@ -136,7 +125,7 @@ Suivez ce tutoriel et prenez notes des différentes commandes.
 
 :::info tutoriel Conteneur Docker
 
-1. Exécutez la commande `docker run --name devops-hello ubuntu:24.04  /bin/echo 'Hello World!'`.
+1. Exécutez la commande `docker run --name devops-hello ubuntu:24.04  echo 'Hello World!'`.
 1. Vérifiez que la commande a bien affiché `Hello World` dans le terminal.
 1. Consultez la liste des conteneurs via `docker ps -a`.
 1. Comparez le résultat de la commande précédente avec le résultat de la commande `docker ps`.
@@ -154,7 +143,7 @@ vous pouvez y lire trois parties  :
 - exécution par Docker du conteneur de la version 24.04 de 
 ubuntu `docker run ubuntu:24.04`
 - exécution **à l'intérieur du conteneur** de la commande 
-`/bin/echo 'Hello World!'`
+`echo 'Hello World!'`
 - association du nom `devops-hello` avec le conteneur via
 `--name devops-hello`
 
@@ -174,17 +163,17 @@ Ce message retrace les étapes réalisées par Docker pour exécuter le conteneu
 1. Docker vérifie si l'image demandée est disponible localement comme si vous exécutiez `docker image ls`.
 1. S'il ne la trouve pas, il télécharge l'image depuis Docker Hub.
 1. Les couches de l'image sont téléchargées individuellement (un `Pull` par couche) .
-1. Une fois l'image prête, Docker exécute la commande `/bin/echo 'Hello World!'` dans un conteneur basé sur cette image.
+1. Une fois l'image prête, Docker exécute la commande `echo 'Hello World!'` dans un conteneur basé sur cette image.
 1. Le résultat de la commande est affiché (`Hello World!`) avant que **le conteneur ne se termine**.
 
 Remarquez que l'ordre des paramètres est important. 
-`docker run  ubuntu:24.04  /bin/echo --name devops-hello 'Hello World!'` 
+`docker run  ubuntu:24.04  echo --name devops-hello 'Hello World!'` 
 conduira à une erreur.
 
 :::warning conteneur anonyme
 
 Vous pouvez exécutez un conteneur anonyme 
-`docker run ubuntu:24.04  /bin/echo 'Hello World!'`. 
+`docker run ubuntu:24.04  echo 'Hello World!'`. 
 Il faudra simplement récupérer son nom via `docker ps -a`.
 
 :::
@@ -193,18 +182,17 @@ Il faudra simplement récupérer son nom via `docker ps -a`.
 
 Ce premier conteneur est un peu décevant car il s'arrête aussi tôt créé. 
 Suivez le prochain tutoriel qui utilise un conteneur qui reste 
-allumé 5 minutes afin que nous puissions le manipuler un peu plus.
+allumé 30 minutes afin que nous puissions le manipuler un peu plus.
 
 :::info tutoriel Conteneur Docker Actif
 
-1. Exécutez la commande `docker run --name devops-sleep ubuntu:24.04 /bin/sleep 3600`.
+1. Exécutez la commande `docker run --name devops-sleep ubuntu:24.04 sleep 1800`.
 1. **Ouvrez un second terminal** et consultez le statut du conteneur via la commande `docker ps -a`.
-1. Entrez **DANS** le conteneur via la commande `docker exec -it devops-sleep /bin/bash`.
-    1. Listez les fichiers/dossiers présents dans le conteneur `ls -lrtd *`.
-	1. Vérifiez la présence des fichiers `/bin/bash`, `/bin/echo` et `/bin/sleep`.
+1. Entrez **DANS** le conteneur via la commande `docker exec -it devops-sleep bash`.
+    1. Listez les fichiers/dossiers présents dans le conteneur `ls -l`.
     1. Déplacez-vous dans le dossier `/home/ubuntu` via la commande `cd`.
     1. Essayez de cloner le dépôt `git clone https://git.esi-bru.be/4dop1dr-ressources/demo-no-db.git`.
-    1. `git` n'est pas installé dans ce conteneur ubuntu, installez le via `apt -y update` et `apt -y install git`.
+    1. `git` n'est pas installé dans ce conteneur ubuntu, installez le via `apt update` et `apt -y install git`.
     1. Essayez à nouveau de cloner le dépôt `git clone https://git.esi-bru.be/4dop1dr-ressources/demo-no-db.git`.
     1. Sortez du conteneur via `exit`.
 1. Arrêtez le conteneur via `docker stop devops-sleep`.
@@ -213,7 +201,7 @@ allumé 5 minutes afin que nous puissions le manipuler un peu plus.
 :::
 
 La commande pour "entrer dans le conteneur" 
-`docker exec -it devops-sleep /bin/bash` 
+`docker exec -it devops-sleep bash` 
 peut se décomposer comme suit : 
 - `docker exec` est une commande utilisée pour exécuter 
 un processus dans un conteneur en cours d'exécution.
@@ -221,8 +209,8 @@ un processus dans un conteneur en cours d'exécution.
 ouverte pour que vous puissiez interagir avec le conteneur.
 - `-t` (tty) : Alloue un pseudo-terminal pour permettre une 
 expérience interactive (comme un terminal).
-- `devops-sleep`est le nom du conteneur dans lequel la commande sera exécutée. 
-- `/bin/bash` est la commande qui sera exécutée à l'intérieur du conteneur. 
+- `devops-sleep` est le nom du conteneur dans lequel la commande sera exécutée. 
+- `bash` est la commande qui sera exécutée à l'intérieur du conteneur. 
 Il s'agit de l'interpréteur de commandes, pour interagir avec le conteneur via un shell.
 
 ### Mise à jour d'une image
@@ -285,7 +273,7 @@ Modifiez le Dockerfile ci-dessous pour conteneuriser votre application
 `demo-no-db`. Ce premier Dockerfile doit copier le fichier `demo-1.0.0.jar` dans 
 le conteneur. La commande pour construire une image à
 partir d'un fichier intitulé *Dockerfile* présent dans le repertoire courant est 
-`docker build -f Dockerfile -t g12345/spring-demo-no-db .`
+`docker build -f Dockerfile -t g12345/spring-demo-no-db .` (le . fait partie de la commande)
 
 Comparez la taille de l'image `g12345/spring-demo-no-db` avec l'image ubuntu d'origine.
 
@@ -303,7 +291,7 @@ LABEL author="g12345"
 
 # Mise à jour des paquets et installation de Java 17
 RUN apt-get update && \
-    apt-get install -y openjdk-17-jre && \
+    apt-get install -y openjdk-21-jre && \
     apt-get clean
 
 # Définition des variables d'environnements pour Java
