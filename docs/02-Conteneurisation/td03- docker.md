@@ -275,14 +275,6 @@ le conteneur. La commande pour construire une image à
 partir d'un fichier intitulé *Dockerfile* présent dans le repertoire courant est 
 `docker build -f Dockerfile -t g12345/spring-demo-no-db .` (le . fait partie de la commande)
 
-Comparez la taille de l'image `g12345/spring-demo-no-db` avec l'image ubuntu d'origine.
-
-Vérifiez vos modifications en démarrant un conteneur basé sur 
-l'image `g12345/spring-demo-no-db` et consommez le service grâce à l'url 
-`localhost:8080/config`. Déterminez l'utilité des options `-d` et `-p` dans les commandes : 
-- `docker run -d g12345/spring-demo-no-db`
-- `docker run -p 9000:8080 g12345/spring-demo-no-db`
-
 ```bash title="Dockerfile" showLineNumbers
 # Image de base Ubuntu 24.04
 FROM ubuntu:24.04
@@ -290,6 +282,9 @@ FROM ubuntu:24.04
 LABEL author="g12345"
 
 # Mise à jour des paquets et installation de Java 17
+# Chaque instruction RUN ajoute une couche à l'image Docker. 
+# En combinant les commandes dans une seule instruction RUN, 
+# vous limitez le nombre de couches inutiles.
 RUN apt-get update && \
     apt-get install -y openjdk-21-jre && \
     apt-get clean
@@ -312,16 +307,34 @@ CMD ["java", "-jar", "/app/your-application.jar"]
 
 ```
 
+Vérifiez vos modifications en démarrant un conteneur basé sur 
+l'image `g12345/spring-demo-no-db` et consommez le service grâce à l'url 
+`localhost:8080/config`.
+
+Ca ne fonctionne pas ? C'est normal !
 :::
 
-:::warning Taille et instruction RUN
+Le serveur web tourne dans un conteneur que vous pouvez voir comme une machine virtuelle.
+Elle écoute sur le port 8080 du conteneur, pas de votre machine.
+Pour le moment, rien n'écoute sur le port 8080 du *localhost*.
+Pour que ça fonctionne, il faut créer un lien entre un port de votre machine et le port du conteneur.
+On parle de *redirection de port*.
 
-Chaque instruction `RUN` ajoute une **couche** à l'image Docker. 
-En combinant les commandes dans une seule instruction ``RUN``, 
-vous limitez le nombre de couches inutiles.
+:::info tutoriel Redirection de port
 
+Lancez cette fois le conteneur avec une option : `docker run -p 9000:8080 g12345/spring-demo-no-db`
+et testez la consommation du service.
+
+L'option permet justement de définir la redirection de port.
+
+![Redirection de port](../../static/img/docker-redirection-port.png) 
+
+En pratique, on utilisera probablement aussi 8080 comme port local.
+Ici, nous avons pris une valeur fort différente pour bien mettre en évidence la différence entre les deux ports.
+
+Essayez maintenant avec une option supplémentaire : `docker run -d -p 9000:8080 g12345/spring-demo-no-db`.
+Qu'apporte-t-'elle ?
 :::
-
 
 :::note Exercice 2 : Utiliser une source image adaptée
 
@@ -365,8 +378,11 @@ Essayez-vous à cette pratique avec l'exercice ci-dessous.
 
 :::note Exercice 4 : Optimiser une image avec une build multi-stage
 
-Améliorez le Dockerfile précédent pour utiliser une 
-multi stage build.
+Améliorez le Dockerfile précédent pour utiliser une multi stage build.
+- La commande `FROM` possède une option `AS nom_image` pour nommer en interne l'image créée.
+- Une deuxième commande `FROM` dans le fichier débute une deuxième image.
+- Dans la deuxième image la commande `COPY` peut référencer un fichier de la première image grâce au nom qui lui a été donné :
+`COPY --from=nom_image ...`.
 
 Comparez les tailles des différentes images produites dans
 ces exercices afin de déterminer la pratique la plus efficace
