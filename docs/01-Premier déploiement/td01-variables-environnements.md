@@ -265,12 +265,18 @@ AlwaysData est une plateforme qui permet d'héberger des sites web, des applicat
 Elle prend en charge de nombreuses technologies telles que PHP, Python, Node.js, Ruby et Java. Elle est compatible avec des systèmes de bases de données comme MySQL, PostgreSQL, SQLite et MongoDB. 
 De plus, elle offre un accès SSH pour une gestion avancée.
 
-Pour déployer une application Spring Boot sur cette plateforme,
-utilisez le lien que vous avez reçu de *AlwaysData* (le sujet est *Invitation AlwaysData Academic Cloud)
-
 ![Page de login](../../static/img/alwaysdata-login.png)
 
-Choisissez de vous connecter avec *Google*
+Pour déployer une application Spring Boot sur cette plateforme,
+utilisez le lien disponible sur **la page PoEsi** de l'unité afin de vous inscrire.
+
+:::info Type d'inscription
+
+Inscrivez-vous en renseignant votre adresse e-mail étudiante dans le champ "Adresse email", puis choisissez un mot de passe.
+
+**Attention** : l’option "Se connecter avec Google" ne permet pas de bénéficier des avantages réservés aux étudiants de l’établissement.
+
+:::
 
 ![Inscription](../../static/img/alwaysdata-signin.png)
 
