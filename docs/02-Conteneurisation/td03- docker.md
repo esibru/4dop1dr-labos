@@ -459,6 +459,17 @@ d'un conteneur, vous allez attacher un volume à ce conteneur via la commande :
 docker run -v <chemin_hôte>:<chemin_conteneur> <image>
 ```
 
+:::info La notion de volume
+
+Créer un volume c'est créer un lien entre un dossier sur la machine locale et un dossier dans un conteneur.
+![Volume](../../static/img/docker-volume.png) 
+
+Par défaut, *mysql* crée ses bases de données dans le dossier `/var/lib/mysql`.
+Avec l'option `-v`, on peut indiquer que ce dossier est en fait le dossier `mysql_data`sur le disque dur local.
+L'information sera ainsi préservée même en cas de destruction du conteneur.
+
+:::
+
 :::note Exercice 7 : Création d'un volume docker
 
 1. Créez un dossier intitulé `mysql_data`.
