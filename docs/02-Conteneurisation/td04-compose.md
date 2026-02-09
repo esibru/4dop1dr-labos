@@ -43,8 +43,8 @@ qui n'ont pas encore été abordées concernant Docker.
 #### Etape 1 : Valeurs héritées
 
 Lorsque vous utilisez des Dockerfiles, vous constatez
-que deux instrutions assez proches sont utilisées pour 
-demander d'exécutez une action au démarage du conteneur :
+que deux instructions assez proches sont utilisées pour 
+demander d'exécutez une action au démarrage du conteneur :
 `CMD` et `ENTRYPOINT`.
 
 Afin d'y voir plus clair dans la distinction entre ces 
@@ -78,7 +78,7 @@ Enfin démarrez un conteneur basé sur cette image via la commande :
 docker run test-no-entrypoint-no-cmd
 ```
 
-Le conteneur démarre et aucune action ne semble avoir été exécutée. Inspectez la configuraion de l'image et **cherchez** la valeur des directives CMD et Entrypoint de ce conteneur
+Le conteneur démarre et aucune action ne semble avoir été exécutée. Inspectez la configuration de l'image et **cherchez** la valeur des directives CMD et Entrypoint de ce conteneur
 dans le résultat de la commande :
 
 ```bash
@@ -103,7 +103,7 @@ docker run --rm test-no-entrypoint-no-cmd
 
 :::
 
-#### Etape 2 : CMD personalisé
+#### Etape 2 : CMD personnalisé
 
 Modifiez votre Dockerfile et créez une image écrasant la directive **CMD** : 
 
@@ -126,7 +126,7 @@ Si vous essayez de démarrer le même conteneur en passant
 un argument comme dans la commande suivante, une erreur apparait.
 
 ```bash
-docker run --rm test-no-entrypoint-cmd "Bonjout tout le monde"
+docker run --rm test-no-entrypoint-cmd "r tout le monde"
 ```
 
 Il semble impossible de pouvoir passer un argument à `docker run` avec cette image.
@@ -134,7 +134,7 @@ Il semble impossible de pouvoir passer un argument à `docker run` avec cette im
 #### Etape 3 : ENTRYPOINT et les paramètres
 
 Effacez votre conteneur et modifiez votre Dockerfile pour
-ajouter la direcive **ENTRYPOINT** ajoutant la possibilité de gérer des arguments.
+ajouter la directive **ENTRYPOINT** ajoutant la possibilité de gérer des arguments.
 
 ```Dockerfile title="Dockerfile"
 FROM alpine:latest  
@@ -201,7 +201,7 @@ venv/
 
 ```
 
-La commande `docker build` excluera les fichiers et dossiers mentionnés dans le ``.dockerignore``.
+La commande `docker build` exclura les fichiers et dossiers mentionnés dans le ``.dockerignore``.
 
 :::note Exercice 1 : Exclure application.properties
 
@@ -228,11 +228,11 @@ absent des conteneurs générés à partir de cette image ?
 
 :::
 
-:::note Exercice 2 : Gestion des privillèges
+<!-- :::note Exercice 2 : Gestion des privilèges
 
 Modifiez le Dockerfile de l'application demo-no-db en créant un utilisateur sans les privilèges root comme conseillé à la fin du td précédent.
 
-:::
+::: -->
 
 ## Docker compose
 
@@ -275,11 +275,12 @@ database:
   password: "secret"
 ```
 
-:::note Exercice 3 : YAML et erreurs courantes
+:::note Exercice 2 : YAML et erreurs courantes
 
 Trouvez les erreurs dans les fichiers YAML proposés ci-dessous.
 Pour vous aider vous pouvez vérifier que le fichier respecte 
 le format via [l'outil en ligne yamllint.com](https://www.yamllint.com/).
+Vous pouvez aussi utiliser l'extension `YAML` de *Code*.
 
 #### Exemple 1
 
@@ -309,16 +310,16 @@ description: This is a test: with a colon
 #### Exemple 4
 
 ```yaml
-message: This is a test # with a comment caracter
+message: This is a test # with a comment character
 ```
 :::
 
 ### Docker network
 Dans cette section vous allez créer les conteneurs permettant
-d'utliser l'application Spring Boot demo avec une base
+d'utiliser l'application Spring Boot demo avec une base
 de données MySql.
 
-:::note Exercice 4 : Dockerfile pour une application Spring avec bases de données
+:::note Exercice 3 : Dockerfile pour une application Spring avec bases de données
 
 Commencez par **écrire le Dockerfile** permettant de
 lancer l'application Spring Boot `demo` via la 
@@ -342,7 +343,7 @@ g12345 doit être adapté à votre matricule.
 Une fois l'exercice terminé, vous pouvez utiliser l'image avec 
 la base de données embarquée H2 **mais en changeant la valeur des variables 
 d'environnements** vous pourrez l'utiliser aussi avec 
-une base de données MySql démarée à l'aide d'un conteneur.
+une base de données MySql démarrée à l'aide d'un conteneur.
 
 Pour ce faire vous aller devoir suivre les étapes suivantes : 
 1. créer un réseau de communication entre les conteneurs
@@ -400,8 +401,11 @@ docker run --rm \
   g12345/spring-demo
 ```
 
-Consommez le service rest à l'adresse [localhost:8080/config](localhost:8080/config) pour vérifier que votre configuration
-fonctionne. 
+Consommez le service rest à l'adresse [localhost:8080/config](localhost:8080/config) pour vérifier que votre configuration fonctionne. 
+
+Les deux conteneurs peuvent communiquer au travers du réseau virtuel créé.
+
+![Network](../../static/img/docker-network.png) 
 
 Si vous obtenez le résultat attendu, supprimez les conteneurs créés avant de passer à l'étape suivante.
 
@@ -415,11 +419,11 @@ devenu inutile il vous suffit d'utiliser la commande
 :::
 
 
-### Ecriture du docker-compose.yml
+### Écriture du docker-compose.yml
 
 Docker vous a permis de démarrer un conteneur pour 
 votre application, un conteneur pour votre base de données 
-MySql etun réseau pour les associer. 
+MySql et un réseau pour les associer. 
 **Docker compose** permet quant à lui de réaliser 
 toutes ces étapes en utilisant 
 un seul fichier **docker-compose.yml** décrit ci-dessous.
@@ -516,7 +520,7 @@ de configurations sont détaillés dans la documentation](https://docs.docker.co
 Ce fichier docker-compose.yml permet également de déclarer 
 [les volumes utiles aux services](https://docs.docker.com/reference/compose-file/volumes/).
 La clé `db-data` permet de monter
-un volume dans un des dossiers de Docker sur l'hote.
+un volume dans un des dossiers de Docker sur l'hôte.
 Le nom de ce volume peut être modifié via l'utilisation 
 de la clé **name**. 
 
@@ -554,12 +558,19 @@ décomposé en :
   - Un volume `db-data` : 
       - Évite la perte des données MySQL après l'arrêt des conteneurs.
 
-Adaptez le nom du dossier prsent dans la clé `build` 
+Adaptez le nom du dossier présent dans la clé `build` 
 du fichier `docker-compose.yml` et essayez 
-d'utiliser ce fichier avec la commade 
+d'utiliser ce fichier avec la commande 
 `docker-compose up`. 
 Vous devriez pour consommer le service rest de l'application 
 demo à l'adresse [localhost:8080/config](localhost:8080/config).
 
+:::info Exposer le port de mysql
+
+Tiens, pourquoi avoir exposer le port de mysql dans le fichier *yaml* ?
+
+:::
+
 Si ce test est concluant supprimez les éléments créés par 
 Docker compose via la commande `docker-compose down`.
+

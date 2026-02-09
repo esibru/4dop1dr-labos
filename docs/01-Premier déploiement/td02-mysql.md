@@ -29,7 +29,7 @@ Commencez par récupérer l'application Spring-Boot à déployer.
 git clone https://git.esi-bru.be/4dop1dr-ressources/demo.git
 ```
 
-Cette application est composée du controlleur suivant : 
+Cette application est composée du contrôleur suivant : 
 
 ```java showLineNumbers
 @RestController
@@ -146,7 +146,7 @@ spring.application.name=demo pour devops
 server.port=8080
 ```
 
-Dans un terminal *bash*, exportez les variables d'environnements gsystèmes comme ci-dessous : 
+Dans un terminal *bash*, exportez les variables d'environnements systèmes comme ci-dessous : 
 
 ```bash title="déclaration des variables dans le terminal"
 export SPRING_DATASOURCE_URL=jdbc:h2:mem:mydatabase
