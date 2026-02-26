@@ -78,7 +78,7 @@ Enfin démarrez un conteneur basé sur cette image via la commande :
 docker run test-no-entrypoint-no-cmd
 ```
 
-Le conteneur démarre et aucune action ne semble avoir été exécutée. Inspectez la configuration de l'image et **cherchez** la valeur des directives CMD et Entrypoint de ce conteneur
+Le conteneur démarre et aucune action ne semble avoir été exécutée. Inspectez la configuration de l'image et **cherchez** la valeur de la directive CMD de ce conteneur
 dans le résultat de la commande :
 
 ```bash
@@ -126,7 +126,7 @@ Si vous essayez de démarrer le même conteneur en passant
 un argument comme dans la commande suivante, une erreur apparait.
 
 ```bash
-docker run --rm test-no-entrypoint-cmd "r tout le monde"
+docker run --rm test-no-entrypoint-cmd "Bonjour tout le monde"
 ```
 
 Il semble impossible de pouvoir passer un argument à `docker run` avec cette image.
@@ -438,8 +438,8 @@ services:
       - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/mydatabase
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_DATASOURCE_USERNAME=myuser
+      - SPRING_DATASOURCE_PASSWORD=mypassword
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create
       - SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION=true
       - SPRING_SQL_INIT_MODE=always
@@ -527,8 +527,7 @@ de la clé **name**.
 :::
 
 
-Le fichier `docker-compose.yml` proposé peut se 
-décomposé en :
+Le fichier `docker-compose.yml` proposé peut se décomposer en :
 
 - Un service `app` représentant le conteneur de l'application Spring Boot : 
   - Construit l'image à partir du Dockerfile présent 
