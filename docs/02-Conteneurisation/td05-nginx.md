@@ -25,8 +25,8 @@ son rôle de reverse proxy, ainsi que son intégration avec une application pers
 
 :::note L'instant wikipedia
 
-NGINX est un logiciel libre de serveur Web ainsi qu'un proxy inverse écrit par Igor Sysoev, dont le développement a débuté en 2002. C'est depuis avril 2019, le serveur web le plus utilisé au monde d'après Netcraft, ou le deuxième serveur le plus utilisé d'après W3techs. 
-
+NGINX est un logiciel libre de serveur Web ainsi qu'un proxy inverse écrit par Igor Sysoev, dont le développement a débuté en 2002. 
+C'est depuis 2020, le serveur web le plus utilisé au monde devant Apache .
 :::
 
 Un serveur web est un logiciel qui :
@@ -76,7 +76,7 @@ Cette commande se décompose comme suit :
 - `docker run` : démarre un nouveau conteneur à partir d'une image.
 - `-d`: mode détaché, le conteneur tourne en arrière-plan.
 - `--name nginx-site` : donne un nom unique au conteneur.
-- `-p 8080:80`: redirige le port 8080 de la machine hote vers le port 80 du conteneur, port d'écoute par défaut de NGINX.
+- `-p 8080:80`: redirige le port 8080 de la machine hôte vers le port 80 du conteneur, port d'écoute par défaut de NGINX.
 - `$(pwd)` : pour *print working directory* retourne le chemin absolu du répertoire courant.
 - `-v $(pwd)/html:/usr/share/nginx/html:ro` : monte un volume pour lier le dossier local `$(pwd)/html` au dossier `/usr/share/nginx/html` du conteneur. Le dossier du conteneur est en lecture seule (`ro`) ce qui empêche toute modification des fichiers à l'intérieur du conteneur.
 - `nginx` : utilise l'image officielle de NGINX depuis Docker Hub.
@@ -131,7 +131,7 @@ aux connexions réseau, comme le nombre de connexions simultanées. Ce bloc est 
 - `location /he2b {proxy_pass https://he2b.be/;}` : Quand un utilisateur visite [http://localhost:8081/he2b/](http://localhost:8081/he2b/), NGINX redirige la requête vers https://he2b.be/, tout en conservant la partie restante de l'URL, par exemple visiter [http://localhost:8081/he2b/etudiant/](http://localhost:8081/he2b/etudiant/) redirige vers https://he2b.be/etudiant/.
 
 Ce reverse proxy permet d'unifier plusieurs services sous un 
-même domaine. Il peut être amélioré avec l'ajout d'en-têtes HTTP pour mieux gérer la transmission des requêtes ou par l'ajout de la gestion des requêtes HTTPS. N'hésitez pas à consulter [la documentation pour approffondir les possibilités](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/).
+même domaine. Il peut être amélioré avec l'ajout d'en-têtes HTTP pour mieux gérer la transmission des requêtes ou par l'ajout de la gestion des requêtes HTTPS. N'hésitez pas à consulter [la documentation pour approfondir les possibilités](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/).
 
 Démarrez votre reverse proxy via la commande :  
 
@@ -141,10 +141,10 @@ docker run -d --name nginx-proxy -p 8081:80 -v $(pwd)/nginx.conf:/etc/nginx/ngin
 
 Testez que vous avez bien accès aux pages (attention au numéro de port !).
 
-:::note Exercice 5 : Decryptage d'une commande
+:::note Exercice 5 : Décryptage d'une commande
 
-Ecrivez sur une feuille la signification de chaque paramètre de
-la commande afin de vous assurer de votre compréhenssion de 
+Écrivez sur une feuille la signification de chaque paramètre de
+la commande afin de vous assurer de votre compréhension de 
 l'utilisation des conteneurs.
 
 :::
@@ -175,7 +175,7 @@ docker run --rm --name no-db --network my-network-test -p 8082:8080 g12345/sprin
 
 Modifiez la configuration du 
 reverse proxy pour que la route `demo-no-db` 
-redirige vers la route `/config` de l'appliction `demo-no-db`.
+redirige vers la route `/config` de l'application `demo-no-db`.
 
 ```json title="nginx.conf"
 events { }
@@ -196,14 +196,22 @@ http {
 ```
 
 Finalement démarrer un conteneur NGINX associé au réseau. 
-Prenez attention que cette commande s'exécute dans le dosier 
+Prenez attention que cette commande s'exécute dans le dossier 
 contenant le fichier `nginx.conf` vu la présence du `$(pwd)`.
 
 ```bash
 docker run -d --name nginx-proxy --network my-network-test -p 8081:80 -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro nginx
 ```
 
-Si vous consultez dans un brownser l'url `http://localhost:8081/demo-no-db` vous devriez recevoir les données du service rest.
+Si vous consultez dans un browser l'url `http://localhost:8081/demo-no-db` vous devriez recevoir les données du service rest.
+
+:::info Le bon port
+
+Lorsque nous avons lancé le conteneur contenant l'application Spring,
+nous avons utilisé l'option `-p 8082:8080`.
+Comprenez-vous pourquoi nous avons utilisé le port `8080` dans le fichier `nginx.conf` ?
+
+:::
 
 Supprimez les conteneurs créés avant de passer à l'étape suivante.
 
@@ -245,11 +253,11 @@ networks:
 
 Adaptez le nom des images ou des dossiers du fichier 
 `docker-compose.yml` et essayez d'utiliser ce fichier avec 
-la commade `docker-compose up`. 
+la commande `docker-compose up`. 
 Vous devriez pouvoir consommer le service rest de 
 l'application `demo-no-db` à l'adresse `http://localhost:8080/demo-no-db`.
 
-Consultez ensuite les conteneurs dispnibles via `docker ps -a`.
+Consultez ensuite les conteneurs disponibles via `docker ps -a`.
 Vous devriez y trouver les conteneurs concernant NGINX et demo-no-db. 
 Utilisez la commande `docker-compose down` et consulter à nouveau la liste 
 des conteneurs disponibles. Que constatez-vous ?
@@ -259,7 +267,7 @@ des conteneurs disponibles. Que constatez-vous ?
 La commande docker-compose up démarre les conteneurs définis 
 dans le fichier docker-compose.yml. Si les images nécessaires 
 n'existent pas, elles sont construites sinon elles ne sont pas 
-reconstuites et la version disponible sur l'hote est utilisée.
+reconstruites et la version disponible sur l'hôte est utilisée.
 Si vous ajoutez l'option --build la **reconstruction** des images
 est **forcée** même si elles existent déjà.
 
