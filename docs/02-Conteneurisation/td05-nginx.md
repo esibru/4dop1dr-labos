@@ -205,6 +205,16 @@ docker run -d --name nginx-proxy --network my-network-test -p 8081:80 -v $(pwd)/
 
 Si vous consultez dans un browser l'url `http://localhost:8081/demo-no-db` vous devriez recevoir les données du service rest.
 
+:::info Deux chemins vers le même service
+
+Le service rest peut être atteint via deux url différentes :
+1. `http://localhost:8081/demo-no-db`
+2. `http://localhost:8082/config`
+
+Pouvez-vous expliquer ce qui permet à ces deux chemins d'exister ?
+
+:::
+
 :::info Le bon port
 
 Lorsque nous avons lancé le conteneur contenant l'application Spring,
