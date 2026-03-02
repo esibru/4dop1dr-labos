@@ -95,7 +95,7 @@ Avant de passer à la suite, effacez ce conteneur de test.
 
 :::tip
 
-Lorsque vous démarrez des conteneurs temporaires, vous pouvez les effacer automatiquement après leur exécution en utilisant le flag `-rm` comme ci-dessous.
+Lorsque vous démarrez des conteneurs temporaires, vous pouvez les effacer automatiquement après leur exécution en utilisant le flag `--rm` comme ci-dessous.
 
 ```bash
 docker run --rm test-no-entrypoint-no-cmd
