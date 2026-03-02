@@ -566,7 +566,7 @@ demo à l'adresse [localhost:8080/config](localhost:8080/config).
 
 :::info Exposer le port de mysql
 
-Tiens, pourquoi avoir exposer le port de mysql dans le fichier *yaml* ?
+Tiens, pourquoi avoir exposé le port de mysql dans le fichier *yaml* ?
 
 :::
 
