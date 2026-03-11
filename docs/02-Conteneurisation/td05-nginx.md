@@ -136,7 +136,7 @@ même domaine. Il peut être amélioré avec l'ajout d'en-têtes HTTP pour mieux
 Démarrez votre reverse proxy via la commande :  
 
 ```bash
-docker run -d --name nginx-proxy -p 8081:80 -v "${PWD}/nginx.conf":/etc/nginx/nginx.conf:ro nginx
+docker run -d --name nginx-proxy -p 8081:80 -v "/${PWD}/nginx.conf":/etc/nginx/nginx.conf:ro nginx
 ```
 
 Testez que vous avez bien accès aux pages (attention au numéro de port !).
@@ -200,7 +200,7 @@ Prenez attention que cette commande s'exécute dans le dossier
 contenant le fichier `nginx.conf` vu la présence du `${PWD}`.
 
 ```bash
-docker run -d --name nginx-proxy --network my-network-test -p 8081:80 -v "${PWD}/nginx.conf":/etc/nginx/nginx.conf:ro nginx
+docker run -d --name nginx-proxy --network my-network-test -p 8081:80 -v "/${PWD}/nginx.conf":/etc/nginx/nginx.conf:ro nginx
 ```
 
 Si vous consultez dans un browser l'url `http://localhost:8081/demo-no-db` vous devriez recevoir les données du service rest.
