@@ -69,7 +69,7 @@ Démarrez un conteneur NGINX utilisant les fichiers créés en
 `nginx-site`:  
 
 ```bash
-docker run -d --name nginx-site -p 8080:80 -v $(pwd)/html:/usr/share/nginx/html:ro nginx
+docker run -d --name nginx-site -p 8080:80 -v "/${PWD}/html":/usr/share/nginx/html:ro nginx
 ```
 
 Cette commande se décompose comme suit :
@@ -77,8 +77,8 @@ Cette commande se décompose comme suit :
 - `-d`: mode détaché, le conteneur tourne en arrière-plan.
 - `--name nginx-site` : donne un nom unique au conteneur.
 - `-p 8080:80`: redirige le port 8080 de la machine hôte vers le port 80 du conteneur, port d'écoute par défaut de NGINX.
-- `$(pwd)` : pour *print working directory* retourne le chemin absolu du répertoire courant.
-- `-v $(pwd)/html:/usr/share/nginx/html:ro` : monte un volume pour lier le dossier local `$(pwd)/html` au dossier `/usr/share/nginx/html` du conteneur. Le dossier du conteneur est en lecture seule (`ro`) ce qui empêche toute modification des fichiers à l'intérieur du conteneur.
+- `${PWD}` : pour *print working directory* retourne le chemin absolu du répertoire courant.
+- `-v "/${PWD}/html":/usr/share/nginx/html:ro` : monte un volume pour lier le dossier local `"/${PWD}/html"` au dossier `/usr/share/nginx/html` du conteneur. Le dossier du conteneur est en lecture seule (`ro`) ce qui empêche toute modification des fichiers à l'intérieur du conteneur.
 - `nginx` : utilise l'image officielle de NGINX depuis Docker Hub.
 
 Si vous allez sur [http://localhost:8080](http://localhost:8080) dans un navigateur, vous 
@@ -136,7 +136,7 @@ même domaine. Il peut être amélioré avec l'ajout d'en-têtes HTTP pour mieux
 Démarrez votre reverse proxy via la commande :  
 
 ```bash
-docker run -d --name nginx-proxy -p 8081:80 -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro nginx
+docker run -d --name nginx-proxy -p 8081:80 -v "${PWD}/nginx.conf":/etc/nginx/nginx.conf:ro nginx
 ```
 
 Testez que vous avez bien accès aux pages (attention au numéro de port !).
@@ -197,10 +197,10 @@ http {
 
 Finalement démarrer un conteneur NGINX associé au réseau. 
 Prenez attention que cette commande s'exécute dans le dossier 
-contenant le fichier `nginx.conf` vu la présence du `$(pwd)`.
+contenant le fichier `nginx.conf` vu la présence du `${PWD}`.
 
 ```bash
-docker run -d --name nginx-proxy --network my-network-test -p 8081:80 -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro nginx
+docker run -d --name nginx-proxy --network my-network-test -p 8081:80 -v "${PWD}/nginx.conf":/etc/nginx/nginx.conf:ro nginx
 ```
 
 Si vous consultez dans un browser l'url `http://localhost:8081/demo-no-db` vous devriez recevoir les données du service rest.
