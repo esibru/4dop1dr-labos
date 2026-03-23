@@ -209,7 +209,7 @@ docker run --rm \
 
 ```sh
 docker run --rm `
-  -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
+  -v "chemin_absolu_vers_la_configuration\gitlab-runner\config":/etc/gitlab-runner `
   gitlab/gitlab-runner register `
     --non-interactive `
     --url "https://git.esi-bru.be" `
