@@ -146,15 +146,15 @@ un autre conteneur, de contrôler Docker sur la machine hôte.
   runner : 
  
   ```sh
-  docker run -d ^
-    --name gitlab-runner ^
-    --restart always ^
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner ^
-    -v /var/run/docker.sock:/var/run/docker.sock ^
+  docker run -d `
+    --name gitlab-runner `
+    --restart always `
+    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
+    -v /var/run/docker.sock:/var/run/docker.sock `
     gitlab/gitlab-runner:latest
   ```
 
-  Le caractère ^ (accent circonflexe) est utilisé
+  Le caractère ` (accent circonflexe) est utilisé
   pour continuer une commande sur plusieurs lignes.
 
   </TabItem>
@@ -208,15 +208,15 @@ docker run --rm \
   <TabItem value="win" label="Windows">
 
 ```sh
-docker run --rm ^
-  -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner ^
-  gitlab/gitlab-runner register ^
-    --non-interactive ^
-    --url "https://git.esi-bru.be" ^
-    --token "$RUNNER_TOKEN" 
-    --executor "docker" ^
-    --docker-image alpine:latest ^
-    --description "docker-runner"
+docker run --rm `
+  -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
+  gitlab/gitlab-runner register `
+    --non-interactive `
+    --url "https://git.esi-bru.be" `
+    --token "$RUNNER_TOKEN" `
+    --executor "docker" `
+    --docker-image alpine:latest `
+    --description "docker-runner"`
 ```
 
   </TabItem>
@@ -786,14 +786,14 @@ situé dans le dossier `gitlab-runner/config`, consiste à :
   ```
  </TabItem>
   <TabItem value="win" label="Windows">
-  N'oubliez pas chde remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*
+  N'oubliez pas de remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*
 
   ```sh
-  docker run -d ^
-    --name gitlab-runner ^
-    --restart always ^
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner ^
-    -v /var/run/docker.sock:/var/run/docker.sock ^
+  docker run -d `
+    --name gitlab-runner `
+    --restart always `
+    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
+    -v /var/run/docker.sock:/var/run/docker.sock `
     gitlab/gitlab-runner:latest
   ```
   </TabItem>
@@ -822,16 +822,16 @@ situé dans le dossier `gitlab-runner/config`, consiste à :
   N'oubliez pas chde remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*
 
   ```sh
-  docker run --rm ^
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner ^
-    gitlab/gitlab-runner register ^
-      --non-interactive ^
-      --url "https://git.esi-bru.be" ^
+  docker run --rm `
+    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
+    gitlab/gitlab-runner register `
+      --non-interactive `
+      --url "https://git.esi-bru.be" `
       // highlight-next-line
-      --token "$RUNNER_TOKEN" 
-      --executor "docker" ^
-      --docker-image alpine:latest ^
-      --description "docker-runner"
+      --token "$RUNNER_TOKEN" `
+      --executor "docker" `
+      --docker-image alpine:latest `
+      --description "docker-runner" `
       // highlight-next-line
       --docker-network-mode "sonar-network"
   ```
@@ -996,11 +996,11 @@ situé dans le dossier `gitlab-runner/config`, consiste à :
   N'oubliez pas de remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*
 
   ```sh
-  docker run -d ^
-    --name gitlab-runner ^
-    --restart always ^
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner ^
-    -v /var/run/docker.sock:/var/run/docker.sock ^
+  docker run -d `
+    --name gitlab-runner `
+    --restart always `
+    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
+    -v /var/run/docker.sock:/var/run/docker.sock `
     gitlab/gitlab-runner:latest
   ```
   </TabItem>
@@ -1029,15 +1029,15 @@ situé dans le dossier `gitlab-runner/config`, consiste à :
   N'oubliez pas chde remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*
 
   ```sh
-  docker run --rm ^
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner ^
-    gitlab/gitlab-runner register ^
-      --non-interactive ^
-      --url "https://git.esi-bru.be" ^
+  docker run --rm `
+    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
+    gitlab/gitlab-runner register `
+      --non-interactive `
+      --url "https://git.esi-bru.be" `
       // highlight-next-line
       --token "$RUNNER_TOKEN" 
-      --executor "docker" ^
-      --docker-image alpine:latest ^
+      --executor "docker" `
+      --docker-image alpine:latest `
       --description "docker-runner"
       // highlight-next-line
       --docker-volumes /var/run/docker.sock:/var/run/docker.sock
