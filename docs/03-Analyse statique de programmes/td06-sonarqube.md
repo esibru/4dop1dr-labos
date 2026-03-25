@@ -312,7 +312,7 @@ En consultant le rapport sur le serveur, vous constaterez que le nouveau code ne
 
 Ajoutez la classe `ComplexMethod` au projet `quality-demo` afin 
 d’explorer un nouveau type d’erreur. La méthode `intToEnglishValue`
-retourne le anglais correspondant au chiffre donné en paramètre.
+retourne le mot anglais correspondant au chiffre donné en paramètre.
 
 ```java title="ComplexMethod.java" showLineNumbers
 public class ComplexMethod {
