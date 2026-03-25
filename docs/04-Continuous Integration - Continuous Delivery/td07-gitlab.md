@@ -400,6 +400,16 @@ my_first_job:
     - mvn --version
 ```
 
+Vous pouvez également définir une image par défaut pour le pipeline complet:
+```yaml title=".gitlab-ci.yml" showLineNumbers
+default:
+  image: maven:3.9.9-eclipse-temurin-23-alpine
+
+my_first_job:
+  script:
+    - mvn --version
+```
+
 ## Définition d'un pipeline
 
 ### Stages et dépendances
