@@ -933,7 +933,7 @@ La clé `sonar.python.coverage.reportPaths` du fichier de configuration
 a besoin du rapport de couverture de tests.
 Pour obtenir ce rapport, installez la librairie `coverage` : `pip install coverage`.
 Calculez ensuite cette couverture de tests via la commande
-`coverage run -m unittest discover` et générez
+`coverage run -m unittest discover -s tests` et générez
 le rapport final grâce à la commande `coverage xml -o coverage.xml`
 
 Lancez l'analyse de ce projet et consultez le rapport dans SonarQube
