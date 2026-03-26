@@ -83,88 +83,37 @@ un autre conteneur, de contrôler Docker sur la machine hôte.
 
 :::
 
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux/MacOS">
+Nous avons besoin d'un dossier qui servira de volume pour conserver 
+la **configuration persistante du GitLab Runner**. 
+Ce sera le dossier `/chemin_absolu_vers_la_configuration/gitlab-runner/config`.
 
-  Exécutez la commande ci-dessous pour démarrer le runner : 
+- Sur Linux,  le dossier `/srv` existe par défaut sur votre machine hôte et est
+  destiné à héberger des données de services (serveurs web, applications…).
+  C'est lui qui sera le `chemin_absolu_vers_la_configuration`
+- Sur certaines distributions minimalistes ou personnalisées, il 
+  peut être absent, et il faut alors le créer manuellement.
+- Sur Windows créez un dossier `gitlab-runner/config` à l'emplacement de votre choix.
 
-  ```sh
-  docker run -d \
-    --name gitlab-runner \
-    --restart always \
-    -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    gitlab/gitlab-runner:latest
-  ```
+Exécutez la commande ci-dessous pour démarrer le runner : 
 
-  Le dossier`/srv` existe par défaut sur votre machine hôte et est
-  destiné à héberger des données de services (serveurs web, 
-  applications…).
-  Sur certaines distributions minimalistes ou personnalisées, il 
-  peut être absent, et il faut alors le créer manuellement. 
-  Le dossier `/srv/gitlab-runner/config` est utilisé pour stocker 
-  la **configuration persistante du GitLab Runner**. 
+```sh
+docker run -d --name gitlab-runner --restart always \
+  -v //chemin_absolu_vers_la_configuration/gitlab-runner/config:/etc/gitlab-runner \
+  -v //var/run/docker.sock:/var/run/docker.sock \
+  gitlab/gitlab-runner:latest
+```
 
- </TabItem>
-  <TabItem value="win" label="Windows">
+:::info gitbash
 
-  Sous Windows, Docker fonctionne via Docker Desktop, qui crée une 
-  machine virtuelle Linux pour exécuter les conteneurs. 
-  Cette séparation complique la communication entre GitLab Runner 
-  et Docker, notamment si Docker s'exécute en dehors de WSL 
-  (Windows Subsystem for Linux). 
-  Par contre si vous activez WSL 2, vous pouvez simplement 
-  utiliser le socket unix `/var/run/docker.sock`, comme sous Linux.
+Pour rappel, les commandes données fonctionnent sur Linux 
+ainsi qu'avec GitBash sur Windows.
 
-  Si ce n'est déjà fait, commencez par installer Ubuntu via WSL
-  via la commande ci-dessous : 
-
-  ```sh
-  wsl  --install Ubuntu
-  ```
-
-  Afin de garantir que toute nouvelle distribution installée 
-  utilisera WSL 2, exécutez la commande suivante : 
-
-  ```sh
-  wsl --set-default-version 2 wsl --set-version Ubuntu
-  ```
-
-:::warning Problème de droit à l'école
-
-Attention ! Le changement de configuration demandé ci-dessous pose un problème sur les PC de l'école suite à un problème de droits d'administration.
-Sautez cette étape, vous pourrez quand même faire la suite du TD. Il n'y a que la dernière partie (*docker-in-docker*) qui posera un problème.
+- Le `//` permet d'indiquer à GitBash que le chemin doit être compris comme un chemin absolu. (avec une simple `/` il est compris comme un chemin relatif par rapport au dossier d'installation de GitBash.)
+Si vous êtes sur Linux, vous pouvez mettre une simple `/` mais le `//` fonctionne aussi.
+- Le `\` en fin de ligne indique que la commande n'est pas terminée; elle continue à la ligne suivante.
+- Si vous utiliser une CommandTool ou PowerShell sur Windows, 
+il vous faudra adapter la commande.
 :::
-
-  Dans Docker Desktop, 
-  [changez la configuration de Docker pour utiliser WSL](https://docs.docker.com/desktop/settings-and-maintenance/settings/).
-
-
-  Ensuite créez un dossier qui servira de volume pour conserver la 
-  configuration du runner grâce à la commande ci-dessous, 
-  `chemin_absolu_vers_la_configuration` est à remplacer par le dossier de votre choix :
-
-  ```sh
-  mkdir chemin_absolu_vers_la_configuration/gitlab-runner/config
-  ```
-
-  Finalement utilisez la commande suivante pour démarrer le 
-  runner : 
- 
-  ```sh
-  docker run -d `
-    --name gitlab-runner `
-    --restart always `
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
-    -v /var/run/docker.sock:/var/run/docker.sock `
-    gitlab/gitlab-runner:latest
-  ```
-
-  Le caractère ` (accent circonflexe) est utilisé
-  pour continuer une commande sur plusieurs lignes.
-
-  </TabItem>
-</Tabs>
 
 ### Création du token pour un projet
 
@@ -195,12 +144,9 @@ n’exige pas de tags.
 Pour enregistrer le runner de votre machine hôte, il faut exécuter
 la commande `register` du conteneur `gitlab-runner` : 
 
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux/MacOS">
-
 ```sh
 docker run --rm \
-  -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+  -v //chemin_absolu_vers_la_configuration/gitlab-runner/config:/etc/gitlab-runner \
   gitlab/gitlab-runner register \
     --non-interactive \
     --url "https://git.esi-bru.be" \
@@ -209,24 +155,6 @@ docker run --rm \
     --docker-image alpine:latest \
     --description "docker-runner"
 ```
-
- </TabItem>
-  <TabItem value="win" label="Windows">
-
-```sh
-docker run --rm `
-  -v "chemin_absolu_vers_la_configuration\gitlab-runner\config":/etc/gitlab-runner `
-  gitlab/gitlab-runner register `
-    --non-interactive `
-    --url "https://git.esi-bru.be" `
-    --token "$RUNNER_TOKEN" `
-    --executor "docker" `
-    --docker-image alpine:latest `
-    --description "docker-runner"
-```
-
-  </TabItem>
-</Tabs>
 
 :::note Exercice A : Interpréter la commande docker run
 
@@ -779,70 +707,36 @@ situé dans le dossier `gitlab-runner/config`, consiste à :
 - Retirer le GitLab Runner de la liste des runners de votre projet via l’interface web de [git.esi-bru.be](https://git.esi-bru.be).
 - Arrêter le conteneur GitLab Runner avec la commande : `docker stop gitlab-runner`
 - Supprimer le conteneur GitLab Runner avec : `docker rm gitlab-runner`
-- Créer un nouveau conteneur GitLab Runner : 
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux/MacOS">
-  ```sh
-  docker run -d \
-    --name gitlab-runner \
-    --restart always \
-    -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    gitlab/gitlab-runner:latest
-  ```
- </TabItem>
-  <TabItem value="win" label="Windows">
-  N'oubliez pas de remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*
+- Créer un nouveau conteneur GitLab Runner (la commande n'a pas changé): 
 
-  ```sh
-  docker run -d `
-    --name gitlab-runner `
-    --restart always `
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
-    -v /var/run/docker.sock:/var/run/docker.sock `
-    gitlab/gitlab-runner:latest
-  ```
-  </TabItem>
-</Tabs>
+```sh
+docker run -d --name gitlab-runner --restart always \
+  -v //chemin_absolu_vers_la_configuration/gitlab-runner/config:/etc/gitlab-runner \
+  -v //var/run/docker.sock:/var/run/docker.sock \
+  gitlab/gitlab-runner:latest
+```
+
+:::note Rappel
+
+Le `chemin_absolu_vers_la_configuration` est `/srv` sur Linux et un dossier créé par vous sur Windows.
+
+:::
 
 - Enregistrer le runner en précisant le réseau auquel doivent être connectés tous les conteneurs utilisés, à l’aide de la commande
 
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux/MacOS">
-  ```sh
-  docker run --rm \
-    -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-    gitlab/gitlab-runner register \
-      --non-interactive \
-      --url "https://git.esi-bru.be" \
-      // highlight-next-line
-      --token "$RUNNER_TOKEN" \
-      --executor "docker" \
-      --docker-image alpine:latest \
-      --description "docker-runner"
-      // highlight-next-line
-      --docker-network-mode "sonar-network"
-  ```
- </TabItem>
-  <TabItem value="win" label="Windows">
-  N'oubliez pas chde remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*
-
-  ```sh
-  docker run --rm `
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
-    gitlab/gitlab-runner register `
-      --non-interactive `
-      --url "https://git.esi-bru.be" `
-      // highlight-next-line
-      --token "$RUNNER_TOKEN" `
-      --executor "docker" `
-      --docker-image alpine:latest `
-      --description "docker-runner" `
-      // highlight-next-line
-      --docker-network-mode "sonar-network"
-  ```
-  </TabItem>
-</Tabs>
+```sh
+docker run --rm \
+  -v //chemin_absolu_vers_la_configuration/gitlab-runner/config:/etc/gitlab-runner \
+  gitlab/gitlab-runner register \
+    --non-interactive \
+    --url "https://git.esi-bru.be" \
+    --token "$RUNNER_TOKEN" \
+    --executor "docker" \
+    --docker-image alpine:latest \
+    --description "docker-runner"
+    // highlight-next-line
+    --docker-network-mode "sonar-network"
+```
 
 :::note Exercice I : Analyser la qualité du code
 
@@ -976,8 +870,40 @@ docker_build:
     DOCKER_TLS_CERTDIR: "/certs"  # Nécessaire pour Docker-in-Docker
 ```
 
+:::info Sous Windows
+
+  Sous Windows, Docker fonctionne via Docker Desktop, qui crée une 
+  machine virtuelle Linux pour exécuter les conteneurs. 
+  Cette séparation complique la communication entre GitLab Runner 
+  et Docker, notamment si Docker s'exécute en dehors de WSL 
+  (Windows Subsystem for Linux). 
+
+  On vous demande d'activer WSL 2.
+
+  Si ce n'est déjà fait, commencez par installer Ubuntu via WSL
+  via la commande ci-dessous : 
+
+  ```sh
+  wsl  --install Ubuntu
+  ```
+
+  Afin de garantir que toute nouvelle distribution installée 
+  utilisera WSL 2, exécutez la commande suivante : 
+
+  ```sh
+  wsl --set-default-version 2 wsl --set-version Ubuntu
+  ```
+
+  **Attention !** 
+  Le changement de configuration demandé ci-dessous pose un problème sur les PC de l'école suite à un problème de droits d'administration.
+  Nous cherchons une solution...
+
+  Dans Docker Desktop, 
+  [changez la configuration de Docker pour utiliser WSL](https://docs.docker.com/desktop/settings-and-maintenance/settings/).
+:::
+
 Pour permettre à votre conteneur exécutant le job `docker_build` d'utiliser Docker (votre executor),
-[la documentation mentionnne](https://docs.gitlab.com/ci/docker/using_docker_build/#use-the-docker-executor-with-docker-socket-binding)
+[la documentation mentionne](https://docs.gitlab.com/ci/docker/using_docker_build/#use-the-docker-executor-with-docker-socket-binding)
 qu'il faut enregistrer votre runner avec le volume `/var/run/docker.sock:/var/run/docker.sock`.
 
 La solution la plus simple, sans modifier manuellement le fichier de configuration 
@@ -999,7 +925,11 @@ situé dans le dossier `gitlab-runner/config`, consiste à :
   ```
  </TabItem>
   <TabItem value="win" label="Windows">
-  N'oubliez pas de remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*
+  Attention, la commande suivante est prévue pour *PowerShell*;
+  vous devriez être capable de l'adapter pour GitBash ou une CommandTool.
+  
+  Dans tous les cas,
+  n'oubliez pas de remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*.
 
   ```sh
   docker run -d `
