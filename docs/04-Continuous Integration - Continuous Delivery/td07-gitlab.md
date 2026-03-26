@@ -130,6 +130,12 @@ un autre conteneur, de contrôler Docker sur la machine hôte.
   wsl --set-default-version 2 wsl --set-version Ubuntu
   ```
 
+:::warning Problème de droit à l'école
+
+Attention ! Le changement de configuration demandé ci-dessous pose un problème sur les PC de l'école suite à un problème de droits d'administration.
+Sautez cette étape, vous pourrez quand même faire la suite du TD. Il n'y a que la dernière partie (*docker-in-docker*) qui posera un problème.
+:::
+
   Dans Docker Desktop, 
   [changez la configuration de Docker pour utiliser WSL](https://docs.docker.com/desktop/settings-and-maintenance/settings/).
 
