@@ -94,7 +94,11 @@ Ce sera le dossier `/chemin_absolu_vers_la_configuration/gitlab-runner/config`.
   peut être absent, et il faut alors le créer manuellement.
 - Sur Windows créez un dossier `gitlab-runner/config` à l'emplacement de votre choix.
 
-Exécutez la commande ci-dessous pour démarrer le runner : 
+Exécutez les commandes ci-dessous pour télécharger puis démarrer le runner : 
+
+```sh
+docker pull gitlab/gitlab-runner:latest
+```
 
 ```sh
 docker run -d --name gitlab-runner --restart always \
