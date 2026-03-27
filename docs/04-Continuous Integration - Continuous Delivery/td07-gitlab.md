@@ -868,144 +868,172 @@ déploiement.
 :::
 
 
-### Docker in Docker
+### Docker dans un pipeline
 
-Docker in Docker (DinD) désigne l'exécution de Docker à 
-l'intérieur d'un conteneur Docker, permettant ainsi à un conteneur 
-de lancer des commandes Docker et de gérer d'autres conteneurs.
+Lorsqu'on veut exécuter docker à l'intérieur d'un conteneur docker,
+deux solutions existent :
 
-Il est couramment utilisé dans les pipelines CI/CD lorsque des 
-jobs doivent construire des images Docker directement au sein d'un 
-conteneur.
-
-Ce mécanisme est particulièrement utile pour vérifier qu'une image 
-générée à partir de votre application est valide avant de 
-l'envoyer vers un serveur cloud.
-
-Voici un exemple de pipeline intégrant Docker in Docker :
-
-```yaml title=".gitlab-ci.yml" showLineNumbers
-docker_build:
-  stage: docker_build
-  image: docker:20.10.16  # Utilise l'image Docker pour construire l'image
-  services:
-    - docker:20.10.16-dind  # Active Docker-in-Docker
-  script:
-    - docker build -t $DOCKER_USERNAME/4dop1dr-image:$CI_COMMIT_REF_NAME .
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"  # Nécessaire pour Docker-in-Docker
-```
-
-:::info Sous Windows
-
-  Sous Windows, Docker fonctionne via Docker Desktop, qui crée une 
-  machine virtuelle Linux pour exécuter les conteneurs. 
-  Cette séparation complique la communication entre GitLab Runner 
-  et Docker, notamment si Docker s'exécute en dehors de WSL 
-  (Windows Subsystem for Linux). 
-
-  On vous demande d'activer WSL 2.
-
-  Si ce n'est déjà fait, commencez par installer Ubuntu via WSL
-  via la commande ci-dessous : 
-
-  ```sh
-  wsl  --install Ubuntu
-  ```
-
-  Afin de garantir que toute nouvelle distribution installée 
-  utilisera WSL 2, exécutez la commande suivante : 
-
-  ```sh
-  wsl --set-default-version 2 wsl --set-version Ubuntu
-  ```
-
-  **Attention !** 
-  Le changement de configuration demandé ci-dessous pose un problème sur les PC de l'école suite à un problème de droits d'administration.
-  Nous cherchons une solution...
-
-  Dans Docker Desktop, 
-  [changez la configuration de Docker pour utiliser WSL](https://docs.docker.com/desktop/settings-and-maintenance/settings/).
+- Docker in Docker (DinD) désigne l'exécution du démon Docker à
+  l'intérieur d'un conteneur Docker. Ce processus lance des conteneurs
+  "enfants". Cette technique requiert de gérer certains privilèges du
+  conteneur et peut se faire via [l'image
+  docker "docker"](https://hub.docker.com/_/docker).
+  
+- Donner accès au démon Docker hôte afin que le conteneur puisse
+  lancer des conteneurs "frères et sœurs". Cette technique requiert
+  d'avoir un client docker dans le conteneur, et de donner au
+  conteneur un moyen de communiquer avec le démon Docker de l'hôte.
+  
+:::info Déjà vu!
+Nous avons déjà utilisé la seconde technique pour que le conteneur
+gitlab-runner puisse lancer les images de nos piplines : c'est le rôle
+de l'option `-v //var/run/docker.sock:/var/run/docker.sock` utilisée
+jusqu'à présent. Dans les paragraphes à venir, nous allons mettre en
+place un équivalent à cette option pour lancer nos pipelines.
 :::
 
-Pour permettre à votre conteneur exécutant le job `docker_build` d'utiliser Docker (votre executor),
-[la documentation mentionne](https://docs.gitlab.com/ci/docker/using_docker_build/#use-the-docker-executor-with-docker-socket-binding)
-qu'il faut enregistrer votre runner avec le volume `/var/run/docker.sock:/var/run/docker.sock`.
+#### Variante "accès au démon hôte"
 
-La solution la plus simple, sans modifier manuellement le fichier de configuration 
-situé dans le dossier `gitlab-runner/config`, consiste à :
+Voici un exemple de pipeline simple utilisant docker :
 
-- Retirer le GitLab Runner de la liste des runners de votre projet via l’interface web de [git.esi-bru.be](https://git.esi-bru.be).
-- Arrêter le conteneur GitLab Runner avec la commande : `docker stop gitlab-runner`
-- Créer un nouveau conteneur GitLab Runner : 
-- Supprimer le conteneur GitLab Runner avec : `docker rm gitlab-runner`
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux/MacOS">
-  ```sh
-  docker run -d \
-    --name gitlab-runner \
-    --restart always \
-    -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    gitlab/gitlab-runner:latest
-  ```
- </TabItem>
-  <TabItem value="win" label="Windows">
-  Attention, la commande suivante est prévue pour *PowerShell*;
-  vous devriez être capable de l'adapter pour GitBash ou une CommandTool.
+```yaml title=".gitlab-ci.yml" showLineNumbers
+build:
+  image: alpine:latest
+  script:
+  - apk add docker-cli
+  - printf '%s\n' "FROM alpine" "ENTRYPOINT echo coucou" >Dockerfile
+  - docker build -t mon-test-depuis-un-conteneur .
+```
+
+Testez-le maintenant : il doit échouer avec un message indiquant que
+le démon docker n'est pas accessible.
+
+:::info Sous Windows - docker.sock
+Sous Windows, Docker fonctionne via Docker Desktop, qui crée une
+machine virtuelle Linux pour exécuter les conteneurs. C'est dans cette
+VM que se trouve le fichier `/var/run/docker.sock` qui permet de
+communiquer avec le démon docker.
+:::
+
+:::info Sous Windows - Git Bash et `//`
+  Une autre complication est liée à Git Bash : pour nous aider, ce
+  dernier ajuste automatiquement certains chemins qui commencent par
+  `/`. C'est la raison pour laquelle vous voyez `//` apparaître dans
+  de nombreuses commandes de ce labo : cette astuce désactive
+  l'ajustement automatique de Git Bash.
   
-  Dans tous les cas,
-  n'oubliez pas de remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*.
+  Plus d'information sur
+  [la documentation de MSYS2](https://www.msys2.org/docs/filesystem-paths/). (L'astuce utilisant
+  `//` n'est pas mentionnée mais son équivalent moderne avec la
+  variable MSYS2_ENV_CONV_EXCL l'est.)
+:::
 
-  ```sh
-  docker run -d `
-    --name gitlab-runner `
-    --restart always `
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
-    -v /var/run/docker.sock:/var/run/docker.sock `
-    gitlab/gitlab-runner:latest
-  ```
-  </TabItem>
-</Tabs>
 
-- Enregistrer le runner en précisant le volume vers le socket Docker, à l’aide de la commande
+Pour permettre à votre conteneur exécutant le job (appelé « Executor
+») d'utiliser lui-même Docker, [la documentation
+mentionne](https://docs.gitlab.com/ci/docker/using_docker_build/#use-the-docker-executor-with-docker-socket-binding)
+qu'il faut enregistrer votre runner avec le volume
+`/var/run/docker.sock:/var/run/docker.sock`.La solution la plus
+simple, sans modifier manuellement le fichier de configuration situé
+dans le dossier `gitlab-runner/config`, consiste à :
 
-<Tabs groupId="operating-systems">
-  <TabItem value="Linux/macOS" label="Linux/MacOS">
-  ```sh
-  docker run --rm \
-    -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-    gitlab/gitlab-runner register \
-      --non-interactive \
-      --url "https://git.esi-bru.be" \
-      // highlight-next-line
-      --token "$RUNNER_TOKEN" \
-      --executor "docker" \
-      --docker-image alpine:latest \
-      --description "docker-runner"
-      // highlight-next-line
-      --docker-volumes /var/run/docker.sock:/var/run/docker.sock
-  ```
- </TabItem>
-  <TabItem value="win" label="Windows">
-  N'oubliez pas chde remplacer dans la commande ci-dessous le *chemin_absolu_vers_la_configuration*
+- Arrêter le conteneur GitLab Runner avec la commande : `docker stop
+  gitlab-runner` (rappel: en le créant, vous aviez utilisé l'option
+  `--rm` donc le conteneur sera également supprimé en s'arrêtant.)
+- Supprimer le fichier de configuration
+  `//chemin_absolu_vers_la_configuration/gitlab-runner/config.toml`
+- Créer un nouveau conteneur GitLab Runner (la commande n'a pas changé): 
+```sh
+docker run -d --name gitlab-runner --restart always \
+  -v //chemin_absolu_vers_la_configuration/gitlab-runner/config:/etc/gitlab-runner \
+  -v //var/run/docker.sock:/var/run/docker.sock \
+  gitlab/gitlab-runner:latest
+```
 
-  ```sh
-  docker run --rm `
-    -v chemin_absolu_vers_la_configuration\gitlab-runner\config:/etc/gitlab-runner `
-    gitlab/gitlab-runner register `
-      --non-interactive `
-      --url "https://git.esi-bru.be" `
-      // highlight-next-line
-      --token "$RUNNER_TOKEN" 
-      --executor "docker" `
-      --docker-image alpine:latest `
-      --description "docker-runner"
-      // highlight-next-line
-      --docker-volumes /var/run/docker.sock:/var/run/docker.sock
-  ```
-  </TabItem>
-</Tabs>
+- Enregistrer le runner en précisant le volume vers le socket Docker, à l’aide de la commande :
+```sh
+docker run --rm \
+  -v //chemin_absolu_vers_la_configuration/gitlab-runner/config:/etc/gitlab-runner \
+  gitlab/gitlab-runner register \
+    --non-interactive \
+    --url "https://git.esi-bru.be" \
+    --token "$RUNNER_TOKEN" \
+    --executor "docker" \
+    --docker-image alpine:latest \
+    --description "docker-runner" \
+    // highlight-next-line
+    --docker-volumes //var/run/docker.sock:/var/run/docker.sock
+```
 
-L'utilisation de Docker in Docker sera implémentée lors des scénarios de synthèse qui récapitulent 
-l’ensemble des étapes vues dans les TDs.
+Désormais le pipeline ci-dessus devrait passer (il faudra le relancer
+à la main ou refaire un commit). Par ailleurs, puisque le démon docker
+utilisé pour build est **le même** que celui de l'hôte Windows, vous
+**devriez voir** l'image avec la commande `docker image ls`.
+
+#### Variante Docker in Docker
+
+Voici un exemple de pipeline simple utilisant DinD :
+
+```yaml title=".gitlab-ci.yml" showLineNumbers
+build:
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+  - printf '%s\n' "FROM alpine" "ENTRYPOINT echo coucou" >Dockerfile
+  - docker build -t mon-test-depuis-dind .
+```
+
+Testez-le maintenant : il doit échouer avec un message indiquant que
+le service dind ne peut pas s'exécuter et que le démon docker n'est
+pas accessible.
+
+Pour permettre à votre conteneur exécutant le job (appelé « Executor
+») d'utiliser DinD, [la documentation
+mentionne](https://docs.gitlab.com/ci/docker/using_docker_build/#docker-in-docker-with-tls-enabled-in-the-docker-executor)
+qu'il faut enregistrer votre runner pour qu'il crée des conteneurs
+privilégiés. La solution la plus simple, sans modifier manuellement le
+fichier de configuration situé dans le dossier `gitlab-runner/config`,
+consiste à :
+
+- Arrêter le conteneur GitLab Runner avec la commande : `docker stop
+  gitlab-runner` (rappel: en le créant, vous aviez utilisé l'option
+  `--rm` donc le conteneur sera également supprimé en s'arrêtant.)
+- Supprimer le fichier de configuration
+  `//chemin_absolu_vers_la_configuration/gitlab-runner/config.toml`
+- Créer un nouveau conteneur GitLab Runner (la commande n'a pas changé): 
+```sh
+docker run -d --name gitlab-runner --restart always \
+  -v //chemin_absolu_vers_la_configuration/gitlab-runner/config:/etc/gitlab-runner \
+  -v //var/run/docker.sock:/var/run/docker.sock \
+  gitlab/gitlab-runner:latest
+```
+- Enregistrer le runner avec les options indiquant de créer des conteneurs privilégiés et donnant accès aux certificats TLS, à l’aide de la commande :
+```sh
+docker run --rm \
+  -v //chemin_absolu_vers_la_configuration/gitlab-runner/config:/etc/gitlab-runner \
+  gitlab/gitlab-runner register \
+    --non-interactive \
+    --url "https://git.esi-bru.be" \
+    --token "$RUNNER_TOKEN" \
+    --executor "docker" \
+    --docker-image alpine:latest \
+    --description "docker-runner" \
+    // highlight-next-line
+    --docker-privileged \
+    // highlight-next-line
+    --docker-volumes //certs/client
+```
+
+Désormais le pipeline ci-dessus devrait passer (il faudra le relancer
+à la main ou refaire un commit). Par ailleurs, puisque le démon docker
+utilisé pour build est **différent** de celui de l'hôte Windows, vous
+ne verrez **pas** l'image avec la commande `docker image ls`.
+
+
+
+#### Conclusion
+
+L'utilisation de docker dans des conteneurs sera implémentée lors des
+scénarios de synthèse qui récapitulent l’ensemble des étapes vues dans
+les TDs.
