@@ -491,7 +491,7 @@ si plusieurs runners sont disponibles.
 
 :::
 
-### Echange de fichiers entre jobs
+### Échange de fichiers entre jobs
 
 Dans GitLab CI/CD, un **artifact** est un fichier ou un ensemble de fichiers générés 
 lors de l'exécution d'un job dans un pipeline. 
@@ -513,6 +513,17 @@ build:
       - target/  # Conserver le dossier target
     expire_in: 1h  # L'artifact est supprimé après 1 heure
 ```
+
+:::note Exercice : Utilisation d'artifacts avec demo-no-db
+
+Reprenez le pipeline pour l'application *demo-no-db* 
+
+- Définissez trois *stages* : *compile*, *test* et *build*.
+- Utilisez les artifacts pour récupérer ce qui est utile pour les étapes suivantes.
+- Comment récupérer le `.jar` produit à la dernière étape ?
+- Récupérez-le et vérifiez que votre application se lance bien.
+
+:::
 
 ### Ajout d'une cache
 
