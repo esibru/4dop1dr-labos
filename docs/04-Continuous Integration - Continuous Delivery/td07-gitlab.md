@@ -343,7 +343,8 @@ my_first_job:
     - mvn --version
 ```
 
-Maven n'étant pas installé dans l'image de votre runner, vérifiez 
+Maven n'étant pas installé dans l'image de votre runner
+(comment le sait-on ? Quelle est cette image ?), vérifiez 
 que le statut de votre job est **failed** via le menu **Build > Jobs**
 
 Cherchez dans les logs la cause de l'erreur.
