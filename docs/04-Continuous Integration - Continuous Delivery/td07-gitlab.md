@@ -386,7 +386,7 @@ Dans un fichier .gitlab-ci.yml, la directive `image:` est utilisée
 pour spécifier l'image Docker que GitLab CI/CD doit utiliser pour 
 **exécuter le job**. 
 Cette image définit l'environnement dans lequel les commandes du 
-job seront exécutées. Cela permet de personnaliser l'environnement 
+job seront exécutées (à la place de l'image par défaut définie lors de l'enregistrement du *runner*). Cela permet de personnaliser l'environnement 
 d'exécution et de s'assurer que les outils ou dépendances 
 nécessaires sont disponibles.
 
