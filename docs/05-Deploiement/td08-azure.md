@@ -38,6 +38,15 @@ Microsoft Learn est une plateforme d'apprentissage en ligne proposée par Micros
 Elle offre des tutoriels pour aider les développeurs à acquérir des compétences 
 sur les technologies Microsoft, comme Azure. 
 
+:::warning Mise à jour du tutoriel suivant
+
+Le dépôt Git utilisé dans le tutoriel officiel de Microsoft qui suit n’est plus à jour.
+
+Pour suivre correctement le TD et réaliser les exercices, utilisez **le dépôt corrigé** disponible via :  
+[https://git.esi-bru.be/4dop1dr-ressources/azureapptutorial.git](https://git.esi-bru.be/4dop1dr-ressources/azureapptutorial.git)
+
+:::
+
 Afin de vous familiariser avec les solutions de déploiement de Microsoft Azure,
 consultez sur cette plateforme le lien 
 [https://learn.microsoft.com/fr-fr/training/modules/java-target-destinations/1-introduction](https://learn.microsoft.com/fr-fr/training/modules/java-target-destinations/1-introduction)
