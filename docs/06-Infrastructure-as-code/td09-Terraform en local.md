@@ -109,7 +109,7 @@ terraform {
   required_providers {
     local = {
       source = "hashicorp/local"
-      version = "2.5.2"
+      version = "2.7.0"
     }
   // highlight-next-line  
   }
@@ -175,7 +175,7 @@ terraform {
   required_providers {
     local = {
       source = "hashicorp/local"
-      version = "2.5.2"
+      version = "2.7.0"
     }
   }
 }
@@ -375,7 +375,7 @@ terraform {
   required_providers {
     local = {
       source = "hashicorp/local"
-      version = "2.5.2"
+      version = "2.7.0"
     }
   }
 }
@@ -525,7 +525,7 @@ terraform {
   required_providers {
     local = {
       source = "hashicorp/local"
-      version = "2.5.2"
+      version = "2.7.0"
     }
   }
 }
@@ -703,7 +703,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.26.0"
+      version = "4.66.0"
     }
   }
 }
