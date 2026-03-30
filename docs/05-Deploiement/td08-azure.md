@@ -122,6 +122,22 @@ commande comme Terraform sera introduite dans les exercices suivants.
 Suivez la partie **Linux container** du tutoriel en utilisant **Azure Portal** : 
 [https://learn.microsoft.com/en-us/azure/app-service/tutorial-custom-container](https://learn.microsoft.com/en-us/azure/app-service/tutorial-custom-container) afin de réaliser votre premier déploiement.
 
+:::warning Région
+
+Le tutoriel vous suggère d'utiliser la région **West Europe**; cépendant, ceci
+n'est pas d'actualité dans notre cas. 
+
+Azure for Students limite les régions que vous pouvez utiliser. Afin de voir quelles 
+régions vous pouvez utiliser veillez aller au menu des 
+[Policy assignments](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyMenuBlade.MenuView/~/Assignments),
+et sélectionnez l'assignment **Allowed resource deployment regions**. Vous trouverez
+les régions utilisables dans le paramètre `listOfAllowedLocations`:
+
+![Allowed resource deployment regions](../../static/img/azure-01.png)
+
+:::
+
+
 ## Adaptation aux applications Spring-Boot
 
 Si vous souhaitez automatiser le déploiement de l'application `demo-no-db`, vous devez 
