@@ -115,6 +115,16 @@ ainsi qu'avec GitBash sur Windows.
 - Le `//` permet d'indiquer à GitBash que le chemin doit être compris comme un chemin absolu. (avec une simple `/` il est compris comme un chemin relatif par rapport au dossier d'installation de GitBash.)
 Si vous êtes sur Linux, vous pouvez mettre une simple `/` mais le `//` fonctionne aussi.
 - Le `\` en fin de ligne indique que la commande n'est pas terminée; elle continue à la ligne suivante.
+- Si vous travaillez sur une machine Windows de l’école et que vous avez créé le dossier `gitlab-runner` 
+dans votre répertoire `Documents`, la commande suivante s’applique (en supposant que votre nom 
+d’utilisateur est `g12345`) :
+
+  ```sh
+  docker run -d --name gitlab-runner --restart always \
+    -v //c/Users/g12345/Documents/gitlab-runner/config:/etc/gitlab-runner \
+    -v //var/run/docker.sock:/var/run/docker.sock \
+    gitlab/gitlab-runner:latest
+  ```
 - Si vous utiliser une CommandTool ou PowerShell sur Windows, 
 il vous faudra adapter la commande.
 :::
