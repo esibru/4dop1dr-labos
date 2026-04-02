@@ -117,6 +117,13 @@ via ce portail. L'objectif est de se familiariser avec les concepts Azure.
 L'automatisation de la création de l'infrastructure via des outils en ligne de 
 commande comme Terraform sera introduite dans les exercices suivants.
 
+Attention Azure modifie actuellement sa gestion des conteneurs et le tutoriel 
+n'est pas à jour. 
+Avant de tester votre site via l'URL fournie, ajoutez une variable d'environnement 
+nommée `PORT` (et non plus `WEBSITES_PORT`) avec la valeur 8000. 
+Sans cette modification, votre application renverra une erreur car Azure tentera 
+de la joindre sur le port 80 au lieu du port 8000.
+
 :::
 
 Suivez la partie **Linux container** du tutoriel en utilisant **Azure Portal** : 
