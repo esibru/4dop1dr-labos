@@ -769,7 +769,7 @@ docker run --rm \
     --token "$RUNNER_TOKEN" \
     --executor "docker" \
     --docker-image alpine:latest \
-    --description "docker-runner"
+    --description "docker-runner" \
     // highlight-next-line
     --docker-network-mode "sonar-network"
 ```
