@@ -16,6 +16,21 @@ clés du déploiement de conteneurs sur Azure.
 
 :::
 
+:::tip Pour les utilisateurs de Git Bash
+
+Si vous utilisez Git Bash sous Windows, veillez à définir la variable d’environnement 
+suivante avant d’exécuter les commandes de cet exercice :
+
+```
+export MSYS_NO_PATHCONV=1
+```
+
+Sans cette configuration, Git Bash peut modifier les chemins utilisés et tenter 
+d’exécuter les commandes depuis le répertoire répertoire d’installation de Git Bash
+(C:/Program Files/Git), au lieu de votre dossier home.
+
+:::
+
 ## Abonnement Azure 
 
 Microsoft Azure est une plateforme de cloud computing proposée par Microsoft.
